@@ -10,16 +10,47 @@
     --font-mona: 'Mona Sans', system-ui, sans-serif;
     --font-ibm-plex: 'IBM Plex Sans', system-ui, sans-serif;
     --font-manrope: 'Manrope', system-ui, sans-serif;
+
+    --mx: 50%;
+    --my: 40%;
   }
 
   html {
     font-family: var(--font-sans);
     font-feature-settings: "rlig" 1, "calt" 1;
+    scroll-behavior: smooth; /* smooth anchor scroll between sections */
+    background: #000; /* ensure pure black background behind everything */
   }
 
   body {
     @apply antialiased;
   }
+}
+
+/* Animated grid background */
+@layer components {
+  .grid-bg {
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0px, rgba(255,255,255,.05) 1px, transparent 1px, transparent 24px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0px, rgba(255,255,255,.05) 1px, transparent 1px, transparent 24px);
+    background-size: 24px 24px, 24px 24px;
+    background-position: 0px 0px, 0px 0px;
+  }
+
+  .grid-shift {
+    animation: gridShift 20s linear infinite;
+  }
+
+  .spotlight {
+    background:
+      radial-gradient(600px 300px at var(--mx) var(--my), rgba(255,255,255,0.08), transparent 60%),
+      radial-gradient(500px 300px at calc(var(--mx) + 20%) calc(var(--my) - 10%), rgba(255,255,255,0.06), transparent 60%);
+  }
+}
+
+@keyframes gridShift {
+  0% { background-position: 0px 0px, 0px 0px; }
+  100% { background-position: 24px 24px, 24px 24px; }
 }
 
 /* Custom utility classes for shadcn/ui patterns */

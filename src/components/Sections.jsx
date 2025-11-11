@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { motion, useScroll, useSpring } from 'framer-motion'
+import { useEffect } from 'react'
 import { Code2, Smartphone, Server, Boxes, Github, Linkedin, Mail, Globe } from 'lucide-react'
 
 export default function Sections() {
@@ -6,6 +7,10 @@ export default function Sections() {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 },
   }
+
+  // Global page progress bar for connected feel
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, { stiffness: 90, damping: 20, mass: 0.3 })
 
   const experiences = [
     {
@@ -31,11 +36,11 @@ export default function Sections() {
   ]
 
   const skills = [
-    { icon: <Server size={18} />, label: 'Go / Node.js / Python' },
-    { icon: <Boxes size={18} />, label: 'Microservices & Messaging' },
-    { icon: <Code2 size={18} />, label: 'TypeScript / React / Next.js' },
-    { icon: <Smartphone size={18} />, label: 'React Native / Kotlin' },
-    { icon: <Globe size={18} />, label: 'Distributed Systems' },
+    { icon: <Server size={18} /> },
+    { icon: <Boxes size={18} /> },
+    { icon: <Code2 size={18} /> },
+    { icon: <Smartphone size={18} /> },
+    { icon: <Globe size={18} /> },
   ]
 
   const projects = [
@@ -61,13 +66,17 @@ export default function Sections() {
 
   return (
     <div className="relative bg-black text-white">
+      {/* top progress line that binds sections together */}
+      <motion.div style={{ scaleX }} className="fixed left-0 right-0 top-0 h-[2px] origin-left bg-white/40 backdrop-blur z-[60]" />
+
       {/* subtle vignette */}
       <div className="absolute inset-0 pointer-events-none" style={{
         background: 'radial-gradient(1200px 600px at 50% 120%, rgba(255,255,255,0.06), transparent 60%)'
       }} />
 
-      <div className="relative mx-auto max-w-7xl px-6 py-20" id="about">
-        <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ staggerChildren: 0.08 }} className="grid gap-10 md:grid-cols-2">
+      {/* ABOUT */}
+      <section className="relative mx-auto max-w-7xl px-6 py-24" id="about">
+        <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} transition={{ staggerChildren: 0.08 }} className="grid gap-10 md:grid-cols-2">
           <motion.div variants={item}>
             <h2 className="text-2xl font-bold">About</h2>
             <p className="mt-3 text-white/80 leading-relaxed">
@@ -77,24 +86,24 @@ export default function Sections() {
           <motion.div variants={item}>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
               <h3 className="font-semibold">Core Focus</h3>
-              <ul className="mt-3 grid grid-cols-2 gap-3 text-sm text-white/80">
+              <ul className="mt-3 grid grid-cols-5 gap-3 text-sm text-white/80">
                 {skills.map((s, i) => (
-                  <li key={i} className="flex items-center gap-2">
+                  <li key={i} className="flex items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/5 p-3">
                     <span className="text-white/90">{s.icon}</span>
-                    {s.label}
                   </li>
                 ))}
               </ul>
             </div>
           </motion.div>
         </motion.div>
-      </div>
+      </section>
 
-      <div className="relative mx-auto max-w-7xl px-6 py-20" id="experience">
+      {/* EXPERIENCE */}
+      <section className="relative mx-auto max-w-7xl px-6 py-24" id="experience">
         <h2 className="text-2xl font-bold">Experience</h2>
         <div className="mt-8 grid gap-6 md:grid-cols-2">
           {experiences.map((exp, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: .5, delay: i * .05 }} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+            <motion.div key={i} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: .5, delay: i * .05 }} className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-lg font-semibold">{exp.role}</p>
@@ -110,13 +119,14 @@ export default function Sections() {
             </motion.div>
           ))}
         </div>
-      </div>
+      </section>
 
-      <div className="relative mx-auto max-w-7xl px-6 py-20" id="projects">
+      {/* PROJECTS */}
+      <section className="relative mx-auto max-w-7xl px-6 py-24" id="projects">
         <h2 className="text-2xl font-bold">Projects</h2>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {projects.map((p, i) => (
-            <motion.a key={i} href={p.link} target="_blank" rel="noreferrer" initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: .5, delay: i * .05 }} className="group rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-6 backdrop-blur hover:from-white/10">
+            <motion.a key={i} href={p.link} target="_blank" rel="noreferrer" initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: .5, delay: i * .05 }} className="group rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-6 backdrop-blur hover:from-white/10">
               <p className="font-semibold text-white group-hover:text-white transition-colors">{p.title}</p>
               <p className="mt-2 text-sm text-white/80">{p.desc}</p>
               <div className="mt-4 flex flex-wrap gap-2">
@@ -127,9 +137,10 @@ export default function Sections() {
             </motion.a>
           ))}
         </div>
-      </div>
+      </section>
 
-      <div className="relative mx-auto max-w-7xl px-6 pb-24" id="contact">
+      {/* CONTACT */}
+      <section className="relative mx-auto max-w-7xl px-6 pb-28" id="contact">
         <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
           <h2 className="text-2xl font-bold">Contact</h2>
           <p className="mt-2 text-white/80 text-sm">Let’s build something meaningful together.</p>
@@ -145,7 +156,7 @@ export default function Sections() {
             </a>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   )
 }

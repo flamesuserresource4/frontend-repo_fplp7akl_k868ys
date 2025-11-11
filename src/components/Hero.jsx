@@ -1,39 +1,38 @@
-import { motion } from 'framer-motion'
+import { useEffect } from 'react'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 
 export default function Hero() {
+  const mx = useMotionValue(50)
+  const my = useMotionValue(40)
+  const smx = useSpring(mx, { stiffness: 120, damping: 20, mass: 0.6 })
+  const smy = useSpring(my, { stiffness: 120, damping: 20, mass: 0.6 })
+  const bgSpot = useTransform([smx, smy], ([x, y]) => `radial-gradient(600px 300px at ${x}% ${y}%, rgba(255,255,255,0.08), transparent 60%), radial-gradient(500px 300px at calc(${x}% + 20%) calc(${y}% - 10%), rgba(255,255,255,0.06), transparent 60%)`)
+
+  useEffect(() => {
+    const move = (e) => {
+      const { innerWidth, innerHeight } = window
+      const x = (e.clientX / innerWidth) * 100
+      const y = (e.clientY / innerHeight) * 100
+      mx.set(x)
+      my.set(y)
+    }
+    window.addEventListener('mousemove', move)
+    return () => window.removeEventListener('mousemove', move)
+  }, [mx, my])
+
   return (
     <section className="relative min-h-[90vh] w-full overflow-hidden bg-black text-white">
       {/* Animated monochrome grid background */}
-      <motion.div
-        aria-hidden
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            `repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0px, rgba(255,255,255,.04) 1px, transparent 1px, transparent 24px),` +
-            `repeating-linear-gradient(90deg, rgba(255,255,255,.04) 0px, rgba(255,255,255,.04) 1px, transparent 1px, transparent 24px)`
-        }}
-        initial={{ backgroundPosition: '0px 0px, 0px 0px', opacity: 0 }}
-        animate={{ backgroundPosition: ['0px 0px, 0px 0px', '24px 24px, 24px 24px'], opacity: 1 }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-      />
+      <div aria-hidden className="absolute inset-0 grid-bg grid-shift opacity-80" />
 
       {/* Moving spotlight for depth */}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        style={{
-          background:
-            'radial-gradient(600px 300px at 20% 20%, rgba(255,255,255,0.08), transparent 60%), ' +
-            'radial-gradient(500px 300px at 80% 10%, rgba(255,255,255,0.06), transparent 60%)'
-        }}
-      />
+      <motion.div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: bgSpot }} />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 pt-24 pb-16 sm:pt-28 md:pt-36 md:pb-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
           className="max-w-2xl"
         >
