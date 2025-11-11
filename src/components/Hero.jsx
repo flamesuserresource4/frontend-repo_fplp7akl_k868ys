@@ -1,6 +1,66 @@
 import { useEffect } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 
+function WizardMagic() {
+  const float = {
+    animate: {
+      y: [0, -6, 0],
+      rotate: [0, -1.2, 0.8, 0],
+      transition: { duration: 5, repeat: Infinity, ease: 'easeInOut' }
+    }
+  }
+
+  const sparkle = (delay = 0) => ({
+    initial: { opacity: 0, y: 12, scale: 0.6 },
+    animate: {
+      opacity: [0, 1, 0],
+      y: [-8, -22, -34],
+      scale: [0.6, 1, 0.8],
+      transition: { duration: 2.2, repeat: Infinity, delay, ease: 'easeOut' }
+    }
+  })
+
+  return (
+    <div className="pointer-events-none select-none">
+      <motion.svg
+        variants={float}
+        animate="animate"
+        width="220"
+        height="220"
+        viewBox="0 0 220 220"
+        fill="none"
+        className="opacity-70"
+      >
+        {/* Cloak */}
+        <path d="M110 70 C 70 110, 60 170, 110 190 C 160 170, 150 110, 110 70 Z" fill="url(#cloakGrad)" stroke="rgba(255,255,255,0.25)" />
+        {/* Hat */}
+        <path d="M75 78 C 100 60, 140 60, 155 78 C 130 80, 90 80, 75 78 Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.25)" />
+        <path d="M90 78 C 100 45, 130 45, 145 78" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="2" />
+
+        {/* Wand */}
+        <path d="M135 120 L 175 95" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
+        <circle cx="178" cy="93" r="3" fill="white" />
+
+        {/* Sparkles rising */}
+        <motion.circle cx="178" cy="93" r="2" fill="white" variants={sparkle(0)} initial="initial" animate="animate" />
+        <motion.circle cx="168" cy="98" r="1.8" fill="white" variants={sparkle(0.4)} initial="initial" animate="animate" />
+        <motion.circle cx="186" cy="90" r="1.6" fill="white" variants={sparkle(0.8)} initial="initial" animate="animate" />
+        <motion.circle cx="172" cy="88" r="1.4" fill="white" variants={sparkle(1.2)} initial="initial" animate="animate" />
+
+        {/* Subtle face hint */}
+        <circle cx="110" cy="92" r="6" fill="rgba(255,255,255,0.08)" />
+
+        <defs>
+          <linearGradient id="cloakGrad" x1="110" y1="70" x2="110" y2="190" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.12)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.02)" />
+          </linearGradient>
+        </defs>
+      </motion.svg>
+    </div>
+  )
+}
+
 export default function Hero() {
   const mx = useMotionValue(50)
   const my = useMotionValue(40)
@@ -68,6 +128,31 @@ export default function Hero() {
             <span>Distributed Systems</span>
           </div>
         </motion.div>
+      </div>
+
+      {/* Wizard illustration + sparkles (bottom-right) */}
+      <div className="absolute bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-10 md:right-10 z-10">
+        <WizardMagic />
+      </div>
+
+      {/* Ambient twinkles in the background for extra magic */}
+      <div aria-hidden className="absolute inset-0 z-0">
+        {[...Array(18)].map((_, i) => {
+          const left = Math.random() * 100
+          const top = Math.random() * 90
+          const delay = (i % 6) * 0.5
+          const size = 1 + (i % 3) * 0.5
+          return (
+            <motion.span
+              key={i}
+              className="absolute rounded-full bg-white/70"
+              style={{ left: `${left}%`, top: `${top}%`, width: size, height: size }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0.9, 0] }}
+              transition={{ duration: 3 + (i % 5), repeat: Infinity, delay, ease: 'easeInOut' }}
+            />
+          )
+        })}
       </div>
     </section>
   )
