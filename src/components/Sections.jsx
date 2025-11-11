@@ -60,8 +60,12 @@ export default function Sections() {
   ]
 
   return (
-    <div className="relative bg-[#0b0b12] text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(124,58,237,.15),transparent_50%)] pointer-events-none" />
+    <div className="relative bg-black text-white">
+      {/* subtle vignette */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: 'radial-gradient(1200px 600px at 50% 120%, rgba(255,255,255,0.06), transparent 60%)'
+      }} />
+
       <div className="relative mx-auto max-w-7xl px-6 py-20" id="about">
         <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ staggerChildren: 0.08 }} className="grid gap-10 md:grid-cols-2">
           <motion.div variants={item}>
@@ -76,7 +80,7 @@ export default function Sections() {
               <ul className="mt-3 grid grid-cols-2 gap-3 text-sm text-white/80">
                 {skills.map((s, i) => (
                   <li key={i} className="flex items-center gap-2">
-                    <span className="text-fuchsia-300/90">{s.icon}</span>
+                    <span className="text-white/90">{s.icon}</span>
                     {s.label}
                   </li>
                 ))}
@@ -113,7 +117,7 @@ export default function Sections() {
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {projects.map((p, i) => (
             <motion.a key={i} href={p.link} target="_blank" rel="noreferrer" initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: .5, delay: i * .05 }} className="group rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-6 backdrop-blur hover:from-white/10">
-              <p className="font-semibold text-white group-hover:text-fuchsia-300 transition-colors">{p.title}</p>
+              <p className="font-semibold text-white group-hover:text-white transition-colors">{p.title}</p>
               <p className="mt-2 text-sm text-white/80">{p.desc}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {p.tags.map((t, k) => (
@@ -136,7 +140,7 @@ export default function Sections() {
             <a href="https://github.com/" className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/10 px-3 py-2 hover:bg-white/20">
               <Github size={16} /> GitHub
             </a>
-            <a href="https://www.linkedin.com/" className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/10 px-3 py-2 hover:bg-white/20">
+            <a href="https://www.linkedin.com/in/imron-reviady" className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/10 px-3 py-2 hover:bg-white/20">
               <Linkedin size={16} /> LinkedIn
             </a>
           </div>

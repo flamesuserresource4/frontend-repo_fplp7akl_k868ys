@@ -18,7 +18,7 @@ export default function Navbar() {
         <div className="mt-4 rounded-2xl backdrop-blur supports-[backdrop-filter]:bg-white/5 bg-white/10 border border-white/10 shadow-lg">
           <div className="flex items-center justify-between px-6 py-4">
             <a href="#" className="text-white font-semibold tracking-wide text-lg">
-              <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">Senior Engineer</span>
+              Imron Reviady
             </a>
             <nav className="hidden md:flex items-center gap-6">
               {links.map(l => (
